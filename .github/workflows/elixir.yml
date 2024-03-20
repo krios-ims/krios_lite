@@ -16,6 +16,12 @@ permissions:
 
 jobs:
   build:
+    services:
+      db:
+        image: postgres@latest
+        ports:
+        - 5432:5432
+        
 
     name: Build and test
     runs-on: ubuntu-latest

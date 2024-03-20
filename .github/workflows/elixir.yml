@@ -17,10 +17,22 @@ permissions:
 jobs:
   build:
     services:
-      db:
-        image: postgres@latest
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
         ports:
-        - 5432:5432
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
         
 
     name: Build and test
@@ -41,5 +53,7 @@ jobs:
         restore-keys: ${{ runner.os }}-mix-
     - name: Install dependencies
       run: mix deps.get
+    - name: make database
+      run: mix ecto.create
     - name: Run tests
       run: mix test

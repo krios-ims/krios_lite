@@ -1,0 +1,21 @@
+<.header>
+  Item <%= @item.id %>
+  <:subtitle>This is a item record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/items/#{@item}/edit"}>
+      <.button>Edit item</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Sku"><%= @item.sku %></:item>
+  <:item title="Name"><%= @item.name %></:item>
+  <:item title="Category"><%= @item.categories.name %></:item>
+  <:item title="Unit of measure"><%= @item.unit_of_measure %></:item>
+  <:item title="Cost"><%= @item.cost %></:item>
+  <:item title="Price"><%= @item.price %></:item>
+  <:item title="Barcode"><%= @item.barcode %></:item>
+</.list>
+
+<.back navigate={~p"/items"}>Back to items</.back>

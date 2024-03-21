@@ -1,0 +1,35 @@
+<.header>
+  Listing Items
+  <:actions>
+    <.link href={~p"/items/new"}>
+      <.button>New Item</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="items" rows={@items} row_click={&JS.navigate(~p"/items/#{&1}")}>
+  <:col :let={item} label="Sku"><%= item.sku %></:col>
+  <:col :let={item} label="Name"><%= item.name %></:col>
+  <:col :let={item} label="Category"><%= item.categories.name%></:col>
+  <:col :let={item} label="Unit of measure"><%= item.unit_of_measure %></:col>
+  <:col :let={item} label="Cost"><%= item.cost %></:col>
+  <:col :let={item} label="Price"><%= item.price %></:col>
+  <:col :let={item} label="Barcode"><%= item.barcode %></:col>
+  <:action :let={item}>
+    <div class="sr-only">
+      <.link navigate={~p"/items/#{item}"}>Show</.link>
+    </div>
+    <.link navigate={~p"/items/#{item}/edit"}>
+      <label title="Edit" class="cursor-pointer">
+      <.icon name="hero-pencil-square"/>
+      </label>
+      </.link>
+  </:action>
+  <:action :let={item}>
+    <.link href={~p"/items/#{item}"} method="delete" data-confirm="Are you sure?">
+      <label title="Delete" class="cursor-pointer">
+          <.icon name="hero-x-mark"/>
+      </label>
+    </.link>
+  </:action>
+</.table>

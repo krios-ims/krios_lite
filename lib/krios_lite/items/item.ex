@@ -16,6 +16,6 @@ defmodule KriosLite.Items.Item do
     |> cast(attrs, [:sku, :name])
     |> unique_constraint(:sku)
     |> validate_format(:sku, ~r/^[^\s]+$/, message: "SKU cannot have spaces")
-    |> validate_required([:sku, :name])
+    |> validate_required([:sku])
   end
 end

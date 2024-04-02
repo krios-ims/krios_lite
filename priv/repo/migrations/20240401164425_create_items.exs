@@ -4,7 +4,7 @@ defmodule KriosLite.Repo.Migrations.CreateItems do
   def change do
     create table(:items, primary_key: false) do
       add :sku, :string, primary_key: true
-      add :name, :string
+      add :name, :string, null: true
 
       timestamps(type: :utc_datetime)
     end

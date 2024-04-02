@@ -12,7 +12,7 @@ defmodule KriosLite.ItemsFixtures do
       attrs
       |> Enum.into(%{
         name: "some name",
-        sku: "some sku"
+        sku: "some_sku"
       })
       |> KriosLite.Items.create_item()
 

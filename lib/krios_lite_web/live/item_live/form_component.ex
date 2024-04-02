@@ -61,7 +61,7 @@ defmodule KriosLiteWeb.ItemLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Item updated successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> push_navigate(to: "/items/#{item.sku}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}

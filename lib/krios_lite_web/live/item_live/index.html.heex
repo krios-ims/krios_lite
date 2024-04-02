@@ -17,7 +17,8 @@
     <%= item1.name %>
   </:col>
   <:col :let={item} label="Action">
-    <.link phx-click={JS.push("delete", value: %{id: elem(item, 0)})}>
+    <% item1 = elem(item, 1) %>
+    <.link id={"delete-" <> item1.sku} phx-click={JS.push("delete", value: %{id: elem(item, 0)})}>
       <span title="Delete Item">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +36,10 @@
         </svg>
       </span>
     </.link>
-    <.link href={~p"/items/#{Enum.at(String.split(elem(item, 0), "-"), 1)}"}>
+    <.link
+      id={"show-" <> item1.sku}
+      href={~p"/items/#{Enum.at(String.split(elem(item, 0), "-"), 1)}"}
+    >
       <span title="Show Details">
         <svg
           xmlns="http://www.w3.org/2000/svg"

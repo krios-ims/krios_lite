@@ -11,6 +11,7 @@ defmodule KriosLite.ItemsFixtures do
     {:ok, item} =
       attrs
       |> Enum.into(%{
+        id: 1,
         name: "some name",
         sku: "some_sku"
       })

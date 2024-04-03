@@ -22,7 +22,7 @@ defmodule KriosLiteWeb.ItemLive.FormComponent do
         <.input field={@form[:sku]} type="text" label="Sku" />
         <.input field={@form[:name]} type="text" label="Name" />
         <:actions>
-          <.button phx-disable-with="Saving...">Save Item</.button>
+          <.button phx-disable-with="Saving...">Save item</.button>
         </:actions>
       </.simple_form>
     </div>
@@ -61,7 +61,7 @@ defmodule KriosLiteWeb.ItemLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Item updated successfully")
-         |> push_navigate(to: "/items/#{item.sku}")}
+         |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}

@@ -17,7 +17,7 @@ defmodule KriosLite.ItemsTest do
 
     test "get_item!/1 returns the item with given sku" do
       item = item_fixture()
-      assert Items.get_item!(item.sku) == item
+      assert Items.get_item!(item.id) == item
     end
 
     test "create_item/1 with valid data creates a item" do
@@ -44,13 +44,13 @@ defmodule KriosLite.ItemsTest do
     test "update_item/2 with invalid data returns error changeset" do
       item = item_fixture()
       assert {:error, %Ecto.Changeset{}} = Items.update_item(item, @invalid_attrs)
-      assert item == Items.get_item!(item.sku)
+      assert item == Items.get_item!(item.id)
     end
 
     test "delete_item/1 deletes the item" do
       item = item_fixture()
       assert {:ok, %Item{}} = Items.delete_item(item)
-      assert_raise Ecto.NoResultsError, fn -> Items.get_item!(item.sku) end
+      assert_raise Ecto.NoResultsError, fn -> Items.get_item!(item.id) end
     end
 
     test "change_item/1 returns a item changeset" do

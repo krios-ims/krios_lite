@@ -7,63 +7,38 @@
   </:actions>
 </.header>
 
-<.table rows={@streams.items} id="sku">
-  <:col :let={item} label="Sku">
-    <% item1 = elem(item, 1) %>
-    <%= item1.sku %>
-  </:col>
-  <:col :let={item} label="Name">
-    <% item1 = elem(item, 1) %>
-    <%= item1.name %>
-  </:col>
-  <:col :let={item} label="Action">
-    <% item1 = elem(item, 1) %>
-    <.link id={"delete-" <> item1.sku} phx-click={JS.push("delete", value: %{id: elem(item, 0)})}>
-      <span title="Delete Item">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-          />
-        </svg>
-      </span>
-    </.link>
+<.table
+  id="items"
+  rows={@streams.items}
+  row_click={fn {_id, item} -> JS.navigate(~p"/items/#{item}") end}
+>
+  <:col :let={{_id, item}} label="Sku"><%= item.sku %></:col>
+  <:col :let={{_id, item}} label="Name"><%= item.name %></:col>
+  <:action :let={{_id, item}}>
+    <div class="sr-only">
+      <.link navigate={~p"/items/#{item}"}>Show</.link>
+    </div>
+    <.link patch={~p"/items/#{item}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, item}}>
     <.link
-      id={"show-" <> item1.sku}
-      href={~p"/items/#{Enum.at(String.split(elem(item, 0), "-"), 1)}"}
+      phx-click={JS.push("delete", value: %{id: item.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
     >
-      <span title="Show Details">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-          />
-        </svg>
-      </span>
+      Delete
     </.link>
-  </:col>
+  </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="item-modal" show on_cancel={JS.patch(~p"/items")}>
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="item-modal"
+  show
+  on_cancel={JS.patch(~p"/items")}
+>
   <.live_component
     module={KriosLiteWeb.ItemLive.FormComponent}
-    id={@item.sku || :new}
+    id={@item.id || :new}
     title={@page_title}
     action={@live_action}
     item={@item}

@@ -46,34 +46,34 @@ defmodule KriosLiteWeb.ItemLiveTest do
       assert html =~ "some name"
     end
 
-    # test "updates item in listing", %{conn: conn, item: item} do
-    #   {:ok, index_live, _html} = live(conn, ~p"/items")
+    test "updates item in listing", %{conn: conn, item: item} do
+      {:ok, index_live, _html} = live(conn, ~p"/items")
 
-    #   assert index_live |> element("#items-#{item.sku} a", "Edit") |> render_click() =~
-    #            "Edit Item"
+      assert index_live |> element("#items-#{item.id} a", "Edit") |> render_click() =~
+               "Edit"
 
-    #   assert_patch(index_live, ~p"/items/#{item.sku}/edit")
+      assert_patch(index_live, ~p"/items/#{item.id}/edit")
 
-    #   assert index_live
-    #          |> form("#item-form", item: @invalid_attrs)
-    #          |> render_change() =~ "can&#39;t be blank"
+      assert index_live
+             |> form("#item-form", item: @invalid_attrs)
+             |> render_change() =~ "can&#39;t be blank"
 
-    #   assert index_live
-    #          |> form("#item-form", item: @update_attrs)
-    #          |> render_submit()
+      assert index_live
+             |> form("#item-form", item: @update_attrs)
+             |> render_submit()
 
-    #   assert_patch(index_live, ~p"/items")
+      assert_patch(index_live, ~p"/items")
 
-    #   html = render(index_live)
-    #   assert html =~ "Item updated successfully"
-    #   assert html =~ "some updated name"
-    # end
+      html = render(index_live)
+      assert html =~ "Item updated successfully"
+      assert html =~ "some updated name"
+    end
 
     test "deletes item in listing", %{conn: conn, item: item} do
       {:ok, index_live, _html} = live(conn, ~p"/items")
 
-      assert index_live |> element("a#delete-#{item.sku}") |> render_click()
-      refute has_element?(index_live, "#items-#{item.sku}")
+      assert index_live |> element("#items-#{item.id} a", "Delete") |> render_click()
+      refute has_element?(index_live, "#items-#{item.id}")
     end
   end
 
@@ -88,12 +88,12 @@ defmodule KriosLiteWeb.ItemLiveTest do
     end
 
     test "updates item within modal", %{conn: conn, item: item} do
-      {:ok, show_live, _html} = live(conn, ~p"/items/#{item.sku}")
+      {:ok, show_live, _html} = live(conn, ~p"/items/#{item}")
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Item"
+               "Edit"
 
-      assert_patch(show_live, ~p"/items/#{item.sku}/show/edit")
+      assert_patch(show_live, ~p"/items/#{item}/show/edit")
 
       assert show_live
              |> form("#item-form", item: @invalid_attrs)
@@ -103,10 +103,10 @@ defmodule KriosLiteWeb.ItemLiveTest do
              |> form("#item-form", item: @update_attrs)
              |> render_submit()
 
-      assert_redirect(show_live, ~p"/items/#{@update_attrs.sku}")
-      {:ok, new_show_live, _html} = live(conn, ~p"/items/#{@update_attrs.sku}")
-      html = render(new_show_live)
-      assert html =~ "some updated name"
+      assert_patch(show_live, ~p"/items/#{item}")
+
+      html = render(show_live)
+      assert html =~ "Item updated successfully"
     end
   end
 end

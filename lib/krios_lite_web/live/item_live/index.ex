@@ -6,14 +6,7 @@ defmodule KriosLiteWeb.ItemLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    items = Items.list_items()
-
-    socket1 =
-      socket
-      |> stream_configure(:items, dom_id: &"items-#{&1.sku}")
-      |> stream(:items, items)
-
-    {:ok, socket1}
+    {:ok, stream(socket, :items, Items.list_items())}
   end
 
   @impl true
@@ -41,17 +34,12 @@ defmodule KriosLiteWeb.ItemLive.Index do
 
   @impl true
   def handle_info({KriosLiteWeb.ItemLive.FormComponent, {:saved, item}}, socket) do
-    {:noreply, stream_insert(socket, :items, item, at: 0)}
+    {:noreply, stream_insert(socket, :items, item)}
   end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    item =
-      id
-      |> String.split("-")
-      |> Enum.at(1)
-      |> Items.get_item!()
-
+    item = Items.get_item!(id)
     {:ok, _} = Items.delete_item(item)
 
     {:noreply, stream_delete(socket, :items, item)}

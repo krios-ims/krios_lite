@@ -57,6 +57,13 @@ defmodule KriosLiteWeb.Router do
     live("/items/:id", ItemLive.Show, :show)
     live("/items/:id/show/edit", ItemLive.Show, :edit)
 
+    live("/categories", CategoryLive.Index, :index)
+    live("/categories/new", CategoryLive.Index, :new)
+    live("/categories/:id/edit", CategoryLive.Index, :edit)
+
+    live("/categories/:id", CategoryLive.Show, :show)
+    live("/categories/:id/show/edit", CategoryLive.Show, :edit)
+
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{KriosLiteWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live("/users/register", UserRegistrationLive, :new)

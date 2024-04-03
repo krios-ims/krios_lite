@@ -35,7 +35,7 @@ defmodule KriosLite.Items do
       ** (Ecto.NoResultsError)
 
   """
-  def get_item!(sku), do: Repo.get!(Item, sku)
+  def get_item!(id), do: Repo.get!(Item, id)
 
   @doc """
   Creates a item.
